@@ -32,9 +32,14 @@ document.getElementById('districtSelect').addEventListener('change', function ()
   const selectedDistrict = this.value;
   const tbody = document.querySelector('#resultsTable tbody');
   const chart = document.getElementById('chart');
+  const gainersList = document.getElementById('topGainers');
+  const losersList = document.getElementById('topLosers');
 
+  // Clear previous results ONCE
   tbody.innerHTML = '';
   chart.innerHTML = '';
+  gainersList.innerHTML = '';
+  losersList.innerHTML = '';
 
   if (!selectedDistrict) return;
 
@@ -43,10 +48,12 @@ document.getElementById('districtSelect').addEventListener('change', function ()
 
   enrollmentData.forEach(row => {
     if (row.resident === selectedDistrict) {
-      leavingTotals[row.enrolling] = (leavingTotals[row.enrolling] || 0) + row.count;
+      leavingTotals[row.enrolling] =
+        (leavingTotals[row.enrolling] || 0) + row.count;
     }
     if (row.enrolling === selectedDistrict) {
-      incomingTotals[row.resident] = (incomingTotals[row.resident] || 0) + row.count;
+      incomingTotals[row.resident] =
+        (incomingTotals[row.resident] || 0) + row.count;
     }
   });
 
@@ -57,6 +64,7 @@ document.getElementById('districtSelect').addEventListener('change', function ()
 
   let totalLeaving = 0;
   let totalNet = 0;
+  const netResults = []; // ← MUST be outside the loop
 
   allDistricts.forEach(district => {
     const leaving = leavingTotals[district] || 0;
@@ -66,7 +74,7 @@ document.getElementById('districtSelect').addEventListener('change', function ()
     totalLeaving += leaving;
     totalNet += net;
 
-    // Table row
+    // ===== TABLE ROW =====
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${district}</td>
@@ -75,11 +83,12 @@ document.getElementById('districtSelect').addEventListener('change', function ()
     `;
 
     const netCell = tr.querySelector('td:last-child');
-    netCell.className = net > 0 ? 'positive' : net < 0 ? 'negative' : 'neutral';
+    netCell.className =
+      net > 0 ? 'positive' : net < 0 ? 'negative' : 'neutral';
 
-    tbody.appendChild(tr);
+    tbody.appendChild(tr); // ← THIS must be inside loop
 
-    // Chart bar
+    // ===== CHART =====
     const bar = document.createElement('div');
     bar.className = 'bar';
 
@@ -94,11 +103,38 @@ document.getElementById('districtSelect').addEventListener('change', function ()
     bar.appendChild(label);
     bar.appendChild(fill);
     chart.appendChild(bar);
+
+    // ===== COLLECT NET RESULTS =====
+    netResults.push({ district, net });
   });
 
+  // ===== TOP 10 GAINERS =====
+  netResults
+    .filter(d => d.net > 0)
+    .sort((a, b) => b.net - a.net)
+    .slice(0, 10)
+    .forEach(d => {
+      const li = document.createElement('li');
+      li.innerHTML = `${d.district}: <span class="gain">+${d.net}</span>`;
+      gainersList.appendChild(li);
+    });
+
+  // ===== TOP 10 LOSERS =====
+  netResults
+    .filter(d => d.net < 0)
+    .sort((a, b) => a.net - b.net)
+    .slice(0, 10)
+    .forEach(d => {
+      const li = document.createElement('li');
+      li.innerHTML = `${d.district}: <span class="loss">${d.net}</span>`;
+      losersList.appendChild(li);
+    });
+
+  // ===== SUMMARY TOTALS =====
   document.getElementById('totalLeaving').textContent = totalLeaving;
   document.getElementById('totalNet').textContent = totalNet;
 });
+
 
 
 document.getElementById('searchInput').addEventListener('input', function () {

@@ -124,49 +124,130 @@
 .bar-negative {
   background-color: #dc2626;
 }
+.layout {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.left {
+  flex: 2;
+}
+
+.right {
+  flex: 1;
+}
+
+.rank-card {
+  background: white;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.rank-card h3 {
+  margin-top: 0;
+  font-size: 16px;
+}
+
+.rank-card li {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.gain {
+  color: #15803d;
+  font-weight: 600;
+}
+
+.loss {
+  color: #b91c1c;
+  font-weight: 600;
+}
+.app-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.layout {
+  display: flex;
+  gap: 20px;              /* smaller gap */
+  align-items: flex-start;
+  justify-content: center;
+}
+.left {
+  flex: 3;
+}
+
+.right {
+  flex: 2;
+}
+.right {
+  margin-top: 8px;
+}
+
 
 </style>
 
 </head>
-<body>
 
-<h2>Select Resident District</h2>
+<div class="app-container">
+  <body>
 
-<input
-  type="text"
-  id="searchInput"
-  placeholder="Search district..."
-  style="padding:10px; width:260px; margin-bottom:10px;"
->
+  <h2>Select Resident District</h2>
 
-<select id="districtSelect">
-  <option value="">-- Select a District --</option>
-</select>
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Search district..."
+    style="padding:10px; width:260px; margin-bottom:10px;"
+  >
 
-<div class="summary">
-  <div class="card">
-    <div class="label">Total Students Leaving</div>
-    <div id="totalLeaving" class="value">0</div>
+  <select id="districtSelect">
+    <option value="">-- Select a District --</option>
+  </select>
+
+  <div class="summary">
+    <div class="card">
+      <div class="label">Total Students Leaving</div>
+      <div id="totalLeaving" class="value">0</div>
+    </div>
+    <div class="card">
+      <div class="label">Overall Net Gain / Loss</div>
+      <div id="totalNet" class="value">0</div>
+    </div>
   </div>
-  <div class="card">
-    <div class="label">Overall Net Gain / Loss</div>
-    <div id="totalNet" class="value">0</div>
+
+  <div class="layout">
+    <div class="left">
+      <table id="resultsTable">
+        <thead>
+          <tr>
+            <th>District</th>
+            <th>Students Leaving</th>
+            <th>Net Gain / Loss</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <h3>Net Gain / Loss by District</h3>
+      <div id="chart"></div>
+    </div>
+
+    <div class="right">
+      <div class="rank-card">
+        <h3>Top 10 Net Gainers</h3>
+        <ol id="topGainers"></ol>
+      </div>
+
+      <div class="rank-card">
+        <h3>Top 10 Net Losers</h3>
+        <ol id="topLosers"></ol>
+      </div>
+    </div>
   </div>
 </div>
-
-<table id="resultsTable">
-  <thead>
-    <tr>
-      <th>District</th>
-      <th>Students Leaving</th>
-      <th>Net Gain/ loss</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
-
-<h3>Net Gain / Loss by District</h3>
-<div id="chart"></div>
 
 
 <script src="app.js"></script>
