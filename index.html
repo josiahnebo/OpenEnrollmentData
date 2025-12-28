@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Open Enrollment Out by District</title>
+  <style>
+  body {
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background-color: #f5f7fa;
+    padding: 30px;
+    color: #333;
+  }
+
+  h2 {
+    margin-bottom: 10px;
+    color: #1f2937;
+  }
+
+  select {
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    min-width: 280px;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 520px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  thead {
+    background-color: #2563eb;
+    color: #ffffff;
+  }
+
+  th {
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  td {
+    padding: 10px 12px;
+    font-size: 14px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  tbody tr:hover {
+    background-color: #f1f5f9;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .positive {
+    color: #15803d;
+    font-weight: 600;
+  }
+
+  .negative {
+    color: #b91c1c;
+    font-weight: 600;
+  }
+
+  .neutral {
+    color: #374151;
+  }
+  .summary {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.card {
+  background: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  min-width: 220px;
+}
+
+.label {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.value {
+  font-size: 26px;
+  font-weight: bold;
+}
+#chart {
+  margin-top: 15px;
+  width: 520px;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.bar-label {
+  width: 140px;
+  font-size: 13px;
+}
+
+.bar-fill {
+  height: 18px;
+  border-radius: 4px;
+}
+
+.bar-positive {
+  background-color: #16a34a;
+}
+
+.bar-negative {
+  background-color: #dc2626;
+}
+
+</style>
+
+</head>
+<body>
+
+<h2>Select Resident District</h2>
+
+<input
+  type="text"
+  id="searchInput"
+  placeholder="Search district..."
+  style="padding:10px; width:260px; margin-bottom:10px;"
+>
+
+<select id="districtSelect">
+  <option value="">-- Select a District --</option>
+</select>
+
+<div class="summary">
+  <div class="card">
+    <div class="label">Total Students Leaving</div>
+    <div id="totalLeaving" class="value">0</div>
+  </div>
+  <div class="card">
+    <div class="label">Overall Net Gain / Loss</div>
+    <div id="totalNet" class="value">0</div>
+  </div>
+</div>
+
+<table id="resultsTable">
+  <thead>
+    <tr>
+      <th>District</th>
+      <th>Students Leaving</th>
+      <th>Net Gain/ loss</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<h3>Net Gain / Loss by District</h3>
+<div id="chart"></div>
+
+
+<script src="app.js"></script>
+</body>
+</html>
